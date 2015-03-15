@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:model="http://br.eximia.jsfutils/ui">
+<h:head/>
+<h:body>
+	<ui:composition template="models/crudTemplate.xhtml">
+		<ui:param name="titleParam" value="#{bundleIdiomas['idiomas.title']}" />
+		<ui:param name="gridFormParam" value="frmIdiomasGrid" />
+		<ui:param name="datatableParam" value="idiomasDatatable" />
+		<ui:param name="collectionParam" value="#{idiomasController.list}" />
+		<ui:param name="entityParam" value="#{idiomasController.entity}" />
+		<ui:param name="dialogParam" value="frmIdiomasDlg" />
+		<ui:param name="crudDialogParam" value="idiomasCrudDialog" />
+		<ui:param name="crudDisplayParam" value="idiomasCrudDisplay" />
+		<ui:param name="removeConfirmDialogParam" value="idiomasRemoveConfirmationDialog" />
+		<ui:param name="tabTitleParam" value="#{bundleIdiomas['idiomas.panel.idioma']}" />
+		<ui:param name="controllerParam" value="#{idiomasController}" />
+		
+		<ui:define name="datatableColumns">
+			<model:column header="#{bundleIdiomas['idiomas.datatable.idioma']}" field="#{registro.lingua}" />
+			<model:column header="#{bundleIdiomas['idiomas.datatable.competencia']}" field="#{registro.competencia.value}" />
+			<model:column header="#{bundleIdiomas['idiomas.datatable.nivel']}" field="#{registro.nivel.value}" />
+		</ui:define>
+		
+		<ui:define name="fields">
+			<p:tab title="#{tabTitleParam}">
+				<h:panelGrid columns="1">
+					<model:labeledContent label="#{bundleIdiomas['idiomas.panel.idioma.idioma']}">
+						<p:selectOneMenu value="#{entityParam.lingua}" var="item" converter="genericConverter">
+		                     <f:selectItems value="#{controllerParam.linguas}" var="lingua" itemLabel="#{lingua.lingua}" itemValue="#{lingua}"/>
+		                     <p:column>
+		                         #{item}
+		                     </p:column>
+		                 </p:selectOneMenu>
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleIdiomas['idiomas.panel.idioma.competencia']}">
+						<p:selectOneMenu value="#{entityParam.competencia}" var="item">
+		                    <f:selectItems value="#{controllerParam.competencias}" var="competencia" itemLabel="#{competencia.value}" itemValue="#{competencia}"/>
+		                    <p:column>
+		                        #{item.value}
+		                    </p:column>
+		                </p:selectOneMenu>
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleIdiomas['idiomas.panel.idioma.nivel']}">
+						<p:selectOneMenu value="#{entityParam.nivel}" var="item">
+		                     <f:selectItems value="#{controllerParam.niveis}" var="nivel" itemLabel="#{nivel.value}" itemValue="#{nivel}"/>
+		                     <p:column>
+		                         #{item.value}
+		                     </p:column>
+		                 </p:selectOneMenu>
+					</model:labeledContent>
+				</h:panelGrid>
+			</p:tab>
+		</ui:define>
+	 </ui:composition>		
+</h:body>
+</html>

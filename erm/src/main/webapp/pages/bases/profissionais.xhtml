@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:local="http://br.eximia.local/ui"
+	xmlns:model="http://br.eximia.jsfutils/ui">
+<h:head/>
+<h:body>
+	<ui:composition template="models/rawCrudTemplate.xhtml">
+		<ui:param name="titleParam" value="#{bundleProfissionais['profissionais.title']}" />
+		<ui:param name="gridFormParam" value="frmProfissionaisGrid" />
+		<ui:param name="datatableParam" value="profissionaisDatatable" />
+		<ui:param name="collectionParam" value="#{profissionaisController.list}" />
+		<ui:param name="entityParam" value="#{profissionaisController.entity}" />
+		<ui:param name="dialogParam" value="frmProfissionaisDlg" />
+		<ui:param name="crudDialogParam" value="profissionaisCrudDialog" />
+		<ui:param name="crudDisplayParam" value="profissionaisCrudDisplay" />
+		<ui:param name="removeConfirmDialogParam" value="profissionaisRemoveConfirmationDialog" />
+		<ui:param name="tabTitleParam" value="#{bundleProfissionais['profissionais.panel.profissional']}" />
+		<ui:param name="controllerParam" value="#{profissionaisController}" />
+		
+		<ui:define name="datatableColumns">
+			<model:column header="#{bundleProfissionais['profissionais.datatable.pessoa']}" field="#{registro.pessoa}" />
+			<model:column header="#{bundleProfissionais['profissionais.datatable.cpf']}" field="#{registro.pessoa.cpf}" />
+		</ui:define>
+		
+		<ui:define name="fields">
+			<local:tabPessoa pessoa="#{entityParam.pessoa}"
+									 sexos="#{controllerParam.sexos}"
+									 estadosCivis="#{controllerParam.estadosCivis}"
+									 estado="#{controllerParam.estado}"
+									 estados="#{controllerParam.estados}"
+									 cidades="#{controllerParam.cidades}"
+									 container="accordionPanel"
+									 form="#{dialogParam}"/>
+			<p:tab id="tabEscolaridades" title="#{bundleProfissionais['profissionais.panel.escolaridade']}">
+				<h:panelGrid columns="1">
+					<model:labeledContent label="#{bundleProfissionais['profissionais.panel.escolaridade.area']}">
+						<p:selectOneMenu value="#{controllerParam.area}" var="item" converter="genericConverter">
+							 <f:selectItem itemLabel="#{bundleProfissionais['selectOneMenu.select']}" itemValue="" noSelectionOption="true"/> 
+                             <f:selectItems value="#{controllerParam.areas}" var="area" itemLabel="#{area.area}" itemValue="#{area}"/>
+                             <p:column>
+                                 #{item}
+                             </p:column>
+                             <p:ajax update="cursos" immediate="true"/> 
+                         </p:selectOneMenu>
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleProfissionais['profissionais.panel.escolaridade.curso']}">
+						<p:selectOneMenu id="cursos" value="#{controllerParam.escolaridade.curso}" var="item" converter="genericConverter">
+                             <f:selectItems value="#{controllerParam.cursos}" var="curso" itemLabel="#{curso.curso}" itemValue="#{curso}"/>
+                             <p:column>
+                                 #{item}
+                             </p:column>
+                         </p:selectOneMenu>
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleProfissionais['profissionais.panel.escolaridade.instituicao']}">
+						<p:selectOneMenu value="#{controllerParam.escolaridade.instituicao}" var="item" converter="genericConverter">
+                             <f:selectItems value="#{controllerParam.instituicoes}" var="instituicao" itemLabel="#{instituicao.instituicao}" itemValue="#{instituicao}"/>
+                             <p:column>
+                                 #{item}
+                             </p:column>
+                         </p:selectOneMenu>
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleProfissionais['profissionais.panel.escolaridade.cargaHoraria']}">
+						<p:spinner stepFactor="25" value="#{controllerParam.escolaridade.cargaHoraria}"/>
+					</model:labeledContent>
+					<p:commandButton value="#{bundleProfissionais['profissionais.panel.escolaridade.add']}" update="tabEscolaridades" action="#{controllerParam.escolaridadeInit}" process="@this, tabEscolaridades">
+            			<p:collector value="#{controllerParam.escolaridade}" addTo="#{entityParam.escolaridades}" />
+            		</p:commandButton>
+            		<model:datatable id="escolaridades" collection="#{entityParam.escolaridades}">
+            			<model:column header="#{bundleProfissionais['profissionais.panel.escolaridade.datatable.curso']}" field="#{registro.curso}" />
+            			<model:column header="#{bundleProfissionais['profissionais.panel.escolaridade.datatable.instituicao']}" field="#{registro.instituicao}" />
+            			<model:column header="#{bundleProfissionais['profissionais.panel.escolaridade.datatable.cargaHoraria']}" field="#{registro.cargaHoraria}" />
+            			<p:column>
+                           <p:commandButton icon="ui-icon ui-icon-close" title="#{bundleProfissionais['profissionais.panel.escolaridade.datatable.remove']}" update=":#{dialogParam}" process="@this">
+                               <p:collector value="#{registro}" removeFrom="#{entityParam.escolaridades}" />
+                           </p:commandButton>
+                       </p:column>
+            		</model:datatable>
+				</h:panelGrid>
+			</p:tab>
+			<p:tab id="tabExperiencias" title="#{bundleProfissionais['profissionais.panel.experiencia']}">
+				<h:panelGrid columns="1">
+					<h:panelGrid columns="3">
+						<model:labeledContent label="#{bundleProfissionais['profissionais.panel.experiencia.empresa']}">
+							<p:inputText value="#{controllerParam.experiencia.empresa}" />
+						</model:labeledContent>
+						<model:labeledContent label="#{bundleProfissionais['profissionais.panel.experiencia.admissao']}">
+							<p:inputMask value="#{controllerParam.experiencia.admissao}" mask="99/99/9999">
+								<f:convertDateTime type="date" dateStyle="short" pattern="dd/MM/yyyy"/>
+							</p:inputMask>
+						</model:labeledContent>
+						<model:labeledContent label="#{bundleProfissionais['profissionais.panel.experiencia.demissao']}">
+							<p:inputMask value="#{controllerParam.experiencia.demissao}" mask="99/99/9999">
+								<f:convertDateTime type="date" dateStyle="short" pattern="dd/MM/yyyy"/>
+							</p:inputMask>
+						</model:labeledContent>
+					</h:panelGrid>
+					<h:panelGrid columns="2">
+						<model:labeledContent label="#{bundleProfissionais['profissionais.panel.experiencia.departamento']}">
+							<p:selectOneMenu value="#{controllerParam.departamento}" var="item" converter="genericConverter">
+								 <f:selectItem itemLabel="#{bundleProfissionais['selectOneMenu.select']}" itemValue="" noSelectionOption="true"/> 
+	                             <f:selectItems value="#{controllerParam.departamentos}" var="departamento" itemLabel="#{departamento.departamento}" itemValue="#{departamento}"/>
+	                             <p:column>
+	                                 #{item}
+	                             </p:column>
+	                             <p:ajax update="cargos" immediate="true"/> 
+	                         </p:selectOneMenu>
+						</model:labeledContent>
+						<model:labeledContent label="#{bundleProfissionais['profissionais.panel.experiencia.cargo']}">
+							<p:selectOneMenu id="cargos" value="#{controllerParam.experiencia.cargo}" var="item" converter="genericConverter">
+	                             <f:selectItems value="#{controllerParam.cargos}" var="cargo" itemLabel="#{cargo.cargo}" itemValue="#{cargo}"/>
+	                             <p:column>
+	                                 #{item}
+	                             </p:column>
+	                         </p:selectOneMenu>
+						</model:labeledContent>
+					</h:panelGrid>
+					<model:labeledContent label="#{bundleProfissionais['profissionais.panel.experiencia.atividades']}">
+						<p:inputTextarea value="#{controllerParam.experiencia.atividades}" autoResize="false"/>
+					</model:labeledContent>
+					<p:commandButton value="#{bundleProfissionais['profissionais.panel.experiencia.add']}" update="tabExperiencias" action="#{controllerParam.experienciaInit}" process="@this, tabExperiencias">
+            			<p:collector value="#{controllerParam.experiencia}" addTo="#{entityParam.experiencias}" />
+            		</p:commandButton>
+            		<p:dataTable id="experiencias" var="registro" value="#{entityParam.experiencias}" paginator="true" rows="2" emptyMessage="#{bundleProfissionais['datatable.empty']}">
+            			<model:column header="#{bundleProfissionais['profissionais.panel.experiencia.datatable.empresa']}" field="#{registro.empresa}" />
+                        <p:column headerText="#{bundleProfissionais['profissionais.panel.experiencia.datatable.admissao']}" sortBy="#{registro.admissao}" filterBy="#{registro.admissao}">
+                            <h:outputText value="#{registro.admissao}">
+                                <f:convertDateTime type="date" dateStyle="short" pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{bundleProfissionais['profissionais.panel.experiencia.datatable.demissao']}" sortBy="#{registro.demissao}" filterBy="#{registro.demissao}">
+                            <h:outputText value="#{registro.demissao}">
+                                <f:convertDateTime type="date" dateStyle="short" pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+            			<p:column>
+            			   <p:commandButton icon="ui-icon ui-icon-document" title="#{bundleProfissionais['profissionais.panel.experiencia.datatable.edit']}" update=":#{dialogParam}" process="@this">
+                               <f:setPropertyActionListener value="#{registro}" target="#{controllerParam.experiencia}" />
+                           </p:commandButton>
+                           <p:commandButton icon="ui-icon ui-icon-close" title="#{bundleProfissionais['profissionais.panel.escolaridade.datatable.remove']}" update=":#{dialogParam}" process="@this">
+                               <p:collector value="#{registro}" removeFrom="#{entityParam.experiencias}" />
+                           </p:commandButton>
+                       </p:column>
+            		</p:dataTable>
+				</h:panelGrid>
+			</p:tab>
+			<p:tab id="tabComplementos" title="#{bundleProfissionais['profissionais.panel.complemento']}">
+				<h:panelGrid columns="1">
+					<model:labeledContent label="#{bundleProfissionais['profissionais.panel.complemento.tipo']}">
+						<p:selectOneMenu value="#{controllerParam.complemento.complementoTipo}" var="item" converter="genericConverter">
+							 <f:selectItem itemLabel="#{bundleProfissionais['selectOneMenu.select']}" itemValue="" noSelectionOption="true"/> 
+                             <f:selectItems value="#{controllerParam.complementosTipo}" var="complementoTipo" itemLabel="#{complementoTipo.complementoTipo}" itemValue="#{complementoTipo}"/>
+                             <p:column>
+                                 #{item}
+                             </p:column>
+                         </p:selectOneMenu>
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleProfissionais['profissionais.panel.complemento.atividades']}">
+						<p:inputTextarea value="#{controllerParam.complemento.atividades}" autoResize="false"/>
+					</model:labeledContent>
+					<p:commandButton value="#{bundleProfissionais['profissionais.panel.complemento.add']}" update="tabComplementos" action="#{controllerParam.complementoInit}" process="@this, tabComplementos">
+            			<p:collector value="#{controllerParam.complemento}" addTo="#{entityParam.complementos}" />
+            		</p:commandButton>
+            		<p:dataTable id="complementos" var="registro" value="#{entityParam.complementos}" paginator="true" rows="2" emptyMessage="#{bundleProfissionais['datatable.empty']}">
+            			<model:column header="#{bundleProfissionais['profissionais.panel.complemento.datatable.tipo']}" field="#{registro.complementoTipo}" />
+                        <p:column>
+            			   <p:commandButton icon="ui-icon ui-icon-document" title="#{bundleProfissionais['profissionais.panel.complemento.datatable.edit']}" update=":#{dialogParam}" process="@this">
+                               <f:setPropertyActionListener value="#{registro}" target="#{controllerParam.complemento}" />
+                           </p:commandButton>
+                           <p:commandButton icon="ui-icon ui-icon-close" title="#{bundleProfissionais['profissionais.panel.complemento.datatable.remove']}" update=":#{dialogParam}" process="@this">
+                               <p:collector value="#{registro}" removeFrom="#{entityParam.complementos}" />
+                           </p:commandButton>
+                       </p:column>
+            		</p:dataTable>
+				</h:panelGrid>
+			</p:tab>
+			<p:tab id="tabIdiomas" title="#{bundleProfissionais['profissionais.panel.idioma']}">
+				<h:panelGrid columns="1">
+					<model:labeledContent label="#{bundleProfissionais['profissionais.panel.idioma.lingua']}">
+						<p:selectOneMenu value="#{controllerParam.lingua}" var="item" converter="genericConverter">
+							 <f:selectItem itemLabel="#{bundleProfissionais['selectOneMenu.select']}" itemValue="" noSelectionOption="true"/> 
+                             <f:selectItems value="#{controllerParam.linguas}" var="lingua" itemLabel="#{lingua.lingua}" itemValue="#{lingua}"/>
+                             <p:column>
+                                 #{item}
+                             </p:column>
+                             <p:ajax update="cboIdiomas" immediate="true"/>
+                         </p:selectOneMenu>
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleProfissionais['profissionais.panel.idioma.idioma']}">
+						<p:selectOneMenu id="cboIdiomas" value="#{controllerParam.idioma}" var="item" converter="genericConverter">
+							 <f:selectItem itemLabel="#{bundleProfissionais['selectOneMenu.select']}" itemValue="" noSelectionOption="true"/> 
+                             <f:selectItems value="#{controllerParam.idiomas}" var="idioma" itemLabel="#{idioma.lingua} - #{idioma.competencia} - #{idioma.nivel}" itemValue="#{idioma}"/>
+                             <p:column>
+                                 #{item}
+                             </p:column>
+                         </p:selectOneMenu>
+					</model:labeledContent>
+					<p:commandButton value="#{bundleProfissionais['profissionais.panel.idioma.add']}" update="tabIdiomas" process="@this, tabIdiomas">
+            			<p:collector value="#{controllerParam.idioma}" addTo="#{entityParam.idiomas}" />
+            		</p:commandButton>
+            		<p:dataTable id="idiomas" var="registro" value="#{entityParam.idiomas}" paginator="true" rows="2" emptyMessage="#{bundleProfissionais['datatable.empty']}">
+            			<model:column header="#{bundleProfissionais['profissionais.panel.idioma.datatable.idioma']}" field=" #{registro}" />
+                        <p:column>
+                           <p:commandButton icon="ui-icon ui-icon-close" title="#{bundleProfissionais['profissionais.panel.idioma.datatable.remove']}" update=":#{dialogParam}" process="@this">
+                               <p:collector value="#{registro}" removeFrom="#{entityParam.idiomas}" />
+                           </p:commandButton>
+                       </p:column>
+            		</p:dataTable>
+				</h:panelGrid>
+			</p:tab>
+		</ui:define>
+		
+		<ui:define name="saveButton">
+        	<p:commandButton value="#{bundleProfissionais['crudDialog.save']}" action="#{controllerParam.save}" process="@this, :#{dialogParam}:accordionPanel:tabPessoa, :#{dialogParam}:accordionPanel:tabEndereco, :#{dialogParam}:accordionPanel:phonetelephones" update=":growl, :#{gridFormParam}:#{datatableParam}">
+            	<f:setPropertyActionListener value="#{controllerParam.regras.target}" target="#{entityParam.regras}" />  
+           	</p:commandButton>
+		</ui:define>
+	 </ui:composition>		
+</h:body>
+</html>

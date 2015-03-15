@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:model="http://br.eximia.jsfutils/ui">
+<h:head/>
+<h:body>
+	<ui:composition template="models/crudTemplate.xhtml">
+		<ui:param name="titleParam" value="#{bundleCompetenciasTipos['competenciasTipos.title']}" />
+		<ui:param name="gridFormParam" value="frmCompetenciasTiposGrid" />
+		<ui:param name="datatableParam" value="competenciasTiposDatatable" />
+		<ui:param name="collectionParam" value="#{competenciasTiposController.list}" />
+		<ui:param name="entityParam" value="#{competenciasTiposController.entity}" />
+		<ui:param name="dialogParam" value="frmCompetenciasTiposDlg" />
+		<ui:param name="crudDialogParam" value="competenciasTiposCrudDialog" />
+		<ui:param name="crudDisplayParam" value="competenciasTiposCrudDisplay" />
+		<ui:param name="removeConfirmDialogParam" value="competenciasTiposRemoveConfirmationDialog" />
+		<ui:param name="tabTitleParam" value="#{bundleCompetenciasTipos['competenciasTipos.panel.competenciaTipo']}" />
+		<ui:param name="controllerParam" value="#{competenciasTiposController}" />
+		
+		<ui:define name="datatableColumns">
+			<model:column header="#{bundleCompetenciasTipos['competenciasTipos.datatable.competenciaTipo']}" field="#{registro.competenciaTipo}" />
+			<model:column header="#{bundleCompetenciasTipos['competenciasTipos.panel.competenciaTipo.descricao']}" field="#{registro.descricao}" />
+		</ui:define>
+		
+		<ui:define name="fields">
+			<p:tab title="#{tabTitleParam}">
+				<h:panelGrid columns="1">
+					<model:labeledContent label="#{bundleCompetenciasTipos['competenciasTipos.panel.competenciaTipo.competenciaTipo']}">
+						<p:inputText value="#{entityParam.competenciaTipo}" />
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleCompetenciasTipos['competenciasTipos.panel.competenciaTipo.descricao']}">
+						<p:inputTextarea value="#{entityParam.descricao}" autoResize="false" />
+					</model:labeledContent>
+				</h:panelGrid>
+			</p:tab>
+		</ui:define>
+	 </ui:composition>		
+</h:body>
+</html>

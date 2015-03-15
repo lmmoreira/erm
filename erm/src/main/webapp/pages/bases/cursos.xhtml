@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:model="http://br.eximia.jsfutils/ui">
+<h:head/>
+<h:body>
+	<ui:composition template="models/crudTemplate.xhtml">
+		<ui:param name="titleParam" value="#{bundleCursos['cursos.title']}" />
+		<ui:param name="gridFormParam" value="frmCursosGrid" />
+		<ui:param name="datatableParam" value="cursosDatatable" />
+		<ui:param name="dialogParam" value="frmCursosDlg" />
+		<ui:param name="crudDialogParam" value="cursosCrudDialog" />
+		<ui:param name="crudDisplayParam" value="cursosCrudDisplay" />
+		<ui:param name="removeConfirmDialogParam" value="cursosRemoveConfirmationDialog" />
+		<ui:param name="tabTitleParam" value="#{bundleCursos['cursos.panel.curso']}" />
+		<ui:param name="controllerParam" value="#{cursosController}" />
+		
+		<ui:define name="datatableColumns">
+			<model:column header="#{bundleCursos['cursos.datatable.curso']}" field="#{registro.curso}" />
+			<model:column header="#{bundleCursos['cursos.datatable.tipo']}" field="#{registro.tipo.value}" />
+			<model:column header="#{bundleCursos['cursos.datatable.area']}" field="#{registro.area}" />
+		</ui:define>
+		
+		<ui:define name="fields">
+			<p:tab title="#{tabTitleParam}">
+				<h:panelGrid columns="1">
+					<model:labeledContent label="#{bundleCursos['cursos.panel.curso.curso']}">
+						<p:inputText value="#{controllerParam.entity.curso}" />
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleCursos['cursos.panel.curso.tipo']}">
+						<p:selectOneMenu value="#{controllerParam.entity.tipo}" var="item">
+		                             <f:selectItems value="#{controllerParam.tipos}" var="tipo" itemLabel="#{tipo.value}" itemValue="#{tipo}"/>
+		                             <p:column>
+		                                 #{item.value}
+		                             </p:column>
+		                         </p:selectOneMenu>
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleCursos['cursos.panel.curso.area']}">
+						<p:selectOneMenu value="#{controllerParam.entity.area}" var="item" converter="genericConverter">
+		                             <f:selectItems value="#{controllerParam.areas}" var="area" itemLabel="#{area.area}" itemValue="#{area}"/>
+		                             <p:column>
+		                                 #{item}
+		                             </p:column>
+		                         </p:selectOneMenu>
+					</model:labeledContent>
+				</h:panelGrid>
+			</p:tab>
+		</ui:define>
+	 </ui:composition>		
+</h:body>
+</html>

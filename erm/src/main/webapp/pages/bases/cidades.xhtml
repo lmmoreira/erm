@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:model="http://br.eximia.jsfutils/ui">
+<h:head/>
+<h:body>
+	<ui:composition template="models/crudTemplate.xhtml">
+		<ui:param name="titleParam" value="#{bundleCidades['cidades.title']}" />
+		<ui:param name="gridFormParam" value="frmCidadesGrid" />
+		<ui:param name="datatableParam" value="cidadesDatatable" />
+		<ui:param name="controllerParam" value="#{cidadesController}" />
+		<ui:param name="dialogParam" value="frmCidadesDlg" />
+		<ui:param name="crudDialogParam" value="cidadesCrudDialog" />
+		<ui:param name="crudDisplayParam" value="cidadesCrudDisplay" />
+		<ui:param name="removeConfirmDialogParam" value="cidadesRemoveConfirmationDialog" />
+		<ui:param name="tabTitleParam" value="#{bundleCidades['cidades.panel.cidade']}" />
+	
+		<ui:define name="datatableColumns">
+			<model:column header="#{bundleCidades['cidades.datatable.cidade']}" field="#{registro.cidade}" />
+			<model:column header="#{bundleCidades['cidades.datatable.estado']}" field="#{registro.estado.value}" />
+		</ui:define>
+		
+		<ui:define name="fields">
+			<p:tab title="#{tabTitleParam}">
+				<h:panelGrid columns="1">
+					<model:labeledContent label="#{bundleCidades['cidades.panel.cidade.cidade']}">
+						<p:inputText value="#{controllerParam.entity.cidade}" />
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleCidades['cidades.panel.cidade.estado']}">
+						<p:selectOneMenu value="#{controllerParam.entity.estado}" var="item">
+                            <f:selectItems value="#{controllerParam.estados}" var="estado" itemLabel="#{estado.value}" itemValue="#{estado}"/>
+                            <p:column>
+                                #{item.value}
+                            </p:column>
+                        </p:selectOneMenu>
+					</model:labeledContent>
+				</h:panelGrid>
+			</p:tab>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

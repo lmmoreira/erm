@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:model="http://br.eximia.jsfutils/ui">
+<h:head/>
+<h:body>
+	<ui:composition template="models/crudTemplate.xhtml">
+		<ui:param name="titleParam" value="#{bundleAreas['areas.title']}" />
+		<ui:param name="gridFormParam" value="frmAreasGrid" />
+		<ui:param name="datatableParam" value="areasDatatable" />
+		<ui:param name="dialogParam" value="frmAreasDlg" />
+		<ui:param name="crudDialogParam" value="areasCrudDialog" />
+		<ui:param name="crudDisplayParam" value="areasCrudDisplay" />
+		<ui:param name="removeConfirmDialogParam" value="areasRemoveConfirmationDialog" />
+		<ui:param name="tabTitleParam" value="#{bundleAreas['areas.panel.area']}" />
+		<ui:param name="controllerParam" value="#{areasController}" />
+		
+		<ui:define name="datatableColumns">
+			<model:column header="#{bundleAreas['areas.datatable.area']}" field="#{registro.area}" />
+		</ui:define>
+		
+		<ui:define name="fields">
+			<p:tab title="#{tabTitleParam}">
+				<h:panelGrid columns="1">
+					<model:labeledContent label="#{bundleAreas['areas.panel.area.area']}">
+						<p:inputText value="#{controllerParam.entity.area}" />
+					</model:labeledContent>
+				</h:panelGrid>
+			</p:tab>
+		</ui:define>
+	 </ui:composition>		
+</h:body>
+</html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:model="http://br.eximia.jsfutils/ui">
+<h:head/>
+<h:body>
+	<ui:composition template="models/crudTemplate.xhtml">
+		<ui:param name="titleParam" value="#{bundleCompetenciasAvaliacoes['competenciasAvaliacoes.title']}" />
+		<ui:param name="gridFormParam" value="frmcompetenciasAvaliacoesGrid" />
+		<ui:param name="datatableParam" value="competenciasAvaliacoesDatatable" />
+		<ui:param name="collectionParam" value="#{competenciasAvaliacoesController.list}" />
+		<ui:param name="entityParam" value="#{competenciasAvaliacoesController.entity}" />
+		<ui:param name="dialogParam" value="frmCompetenciasAvaliacoesDlg" />
+		<ui:param name="crudDialogParam" value="competenciasAvaliacoesCrudDialog" />
+		<ui:param name="crudDisplayParam" value="competenciasAvaliacoesCrudDisplay" />
+		<ui:param name="removeConfirmDialogParam" value="competenciasAvaliacoesRemoveConfirmationDialog" />
+		<ui:param name="tabTitleParam" value="#{bundleCompetenciasAvaliacoes['competenciasAvaliacoes.panel.competenciaAvaliacao']}" />
+		<ui:param name="controllerParam" value="#{competenciasAvaliacoesController}" />
+		
+		<ui:define name="datatableColumns">
+			<model:column header="#{bundleCompetenciasAvaliacoes['competenciasAvaliacoes.datatable.competencia']}" field="#{registro.competencia}" />
+			<model:column header="#{bundleCompetenciasAvaliacoes['competenciasAvaliacoes.datatable.avaliacao']}" field="#{registro.avaliacao}" />
+			<model:column header="#{bundleCompetenciasAvaliacoes['competenciasAvaliacoes.datatable.valor']}" field="#{registro.valor}" />
+		</ui:define>
+		
+		<ui:define name="fields">
+			<p:tab title="#{tabTitleParam}">
+				<h:panelGrid columns="1">
+					<model:labeledContent label="#{bundleCompetenciasAvaliacoes['competenciasAvaliacoes.panel.competenciaAvaliacao.competencia']}">
+						<p:selectOneMenu value="#{entityParam.competencia}" var="item" converter="genericConverter">
+							<f:selectItems value="#{controllerParam.competencias}" var="competencia" itemLabel="#{competencia.competencia}" itemValue="#{competencia}"/>
+		                    <p:column>
+		                        #{item}
+		                    </p:column>
+		                </p:selectOneMenu>
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleCompetenciasAvaliacoes['competenciasAvaliacoes.panel.competenciaAvaliacao.avaliacao']}">
+						<p:inputText value="#{entityParam.avaliacao}" />
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleCompetenciasAvaliacoes['competenciasAvaliacoes.panel.competenciaAvaliacao.valor']}">
+						<p:spinner stepFactor="1" value="#{entityParam.valor}"/>
+					</model:labeledContent>
+				</h:panelGrid>
+			</p:tab>
+		</ui:define>
+	 </ui:composition>		
+</h:body>
+</html>

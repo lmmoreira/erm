@@ -1,0 +1,1 @@
+cmd.exe /X /C ""C:\Program Files\Java\jdk1.6.0_45\bin\javac.exe" @D:/Dropbox/Desenvolvimento/Java/novaer/erm/target/classes/org.codehaus.plexus.compiler.javac.JavacCompiler1316671180538231886arguments"

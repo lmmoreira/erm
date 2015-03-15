@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:model="http://br.eximia.jsfutils/ui">
+<h:head/>
+<h:body>
+	<ui:composition template="models/crudTemplate.xhtml">
+		<ui:param name="titleParam" value="#{bundleCargos['cargos.title']}" />
+		<ui:param name="gridFormParam" value="frmCargosGrid" />
+		<ui:param name="datatableParam" value="cargosDatatable" />
+		<ui:param name="collectionParam" value="#{cargosController.list}" />
+		<ui:param name="entityParam" value="#{cargosController.entity}" />
+		<ui:param name="dialogParam" value="frmCargosDlg" />
+		<ui:param name="crudDialogParam" value="cargosCrudDialog" />
+		<ui:param name="crudDisplayParam" value="cargosCrudDisplay" />
+		<ui:param name="removeConfirmDialogParam" value="cargosRemoveConfirmationDialog" />
+		<ui:param name="tabTitleParam" value="#{bundleCargos['cargos.panel.cargo']}" />
+		<ui:param name="controllerParam" value="#{cargosController}" />
+		
+		<ui:define name="datatableColumns">
+			<model:column header="#{bundleCargos['cargos.datatable.cargo']}" field="#{registro.cargo}" />
+			<model:column header="#{bundleCargos['cargos.datatable.departamento']}" field="#{registro.departamento}" />
+		</ui:define>
+		
+		<ui:define name="fields">
+			<p:tab title="#{tabTitleParam}">
+				<h:panelGrid columns="1">
+					<model:labeledContent label="#{bundleCargos['cargos.panel.cargo.cargo']}">
+						<p:inputText value="#{entityParam.cargo}" />
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleCargos['cargos.panel.cargo.departamento']}">
+						<p:selectOneMenu value="#{entityParam.departamento}" var="item" converter="genericConverter">
+                            <f:selectItems value="#{controllerParam.departamentos}" var="departamento" itemLabel="#{departamento.departamento}" itemValue="#{departamento}"/>
+                            <p:column>
+                                #{item}
+                            </p:column>
+                        </p:selectOneMenu>
+					</model:labeledContent>
+				</h:panelGrid>
+			</p:tab>
+		</ui:define>
+	 </ui:composition>		
+</h:body>
+</html>

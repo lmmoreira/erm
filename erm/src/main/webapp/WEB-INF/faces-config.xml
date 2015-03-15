@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.0"
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    <application>
+    	<resource-bundle>
+            <base-name>br.eximia.erm.i18n.template</base-name>
+            <var>bundleTemplate</var>
+        </resource-bundle>
+    	<resource-bundle>
+            <base-name>br.eximia.erm.i18n.index</base-name>
+            <var>bundleIndex</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>br.eximia.erm.i18n.main</base-name>
+            <var>bundleMain</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>br.eximia.erm.i18n.menu</base-name>
+            <var>bundleMenu</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>br.eximia.erm.i18n.usuarios</base-name>
+            <var>bundleUsuarios</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>br.eximia.erm.i18n.crudEditTemplate</base-name>
+            <var>bundleCrudEditTemplate</var>
+        </resource-bundle>
+        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+    </application>
+</faces-config>

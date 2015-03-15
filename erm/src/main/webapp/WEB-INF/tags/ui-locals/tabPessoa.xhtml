@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:model="http://br.eximia.jsfutils/ui">
+   	
+   	<p:tab id="tabPessoa" title="#{bundleTabPessoa['tabPessoa.panel.pessoa']}">
+   		<h:panelGrid columns="1">
+    		<model:labeledContent label="#{bundleTabPessoa['tabPessoa.panel.pessoa.nome']}">
+				<p:inputText value="#{pessoa.nome}" />
+			</model:labeledContent>
+			<model:labeledContent label="#{bundleTabPessoa['tabPessoa.panel.pessoa.sexo']}">
+				<p:selectOneMenu value="#{pessoa.sexo}" var="item">
+                        <f:selectItems value="#{sexos}" var="sexo" itemLabel="#{sexo.value}" itemValue="#{sexo}"/>
+                        <p:column>
+                            #{item.value}
+                        </p:column>
+                    </p:selectOneMenu>
+			</model:labeledContent>
+			<model:labeledContent label="#{bundleTabPessoa['tabPessoa.panel.pessoa.nascimento']}">
+				<p:inputMask value="#{pessoa.nascimento}" mask="99/99/9999">
+					<f:convertDateTime type="date" dateStyle="short" pattern="dd/MM/yyyy"/>
+				</p:inputMask>
+			</model:labeledContent>
+			<model:labeledContent label="#{bundleTabPessoa['tabPessoa.panel.pessoa.estadoCivil']}">
+				<p:selectOneMenu value="#{pessoa.estadoCivil}" var="item">
+                        <f:selectItems value="#{estadosCivis}" var="estadoCivil" itemLabel="#{estadoCivil.value}" itemValue="#{estadoCivil}"/>
+                        <p:column>
+                            #{item.value}
+                        </p:column>
+                    </p:selectOneMenu>
+			</model:labeledContent>
+			<model:labeledContent label="#{bundleTabPessoa['tabPessoa.panel.pessoa.cpf']}">
+				<p:inputMask value="#{pessoa.cpf}" mask="999.999.999-99" />
+			</model:labeledContent>
+    	</h:panelGrid>
+	</p:tab>
+	<p:tab id="tabEndereco" title="#{bundleTabPessoa['tabPessoa.panel.pessoa.endereco']}">
+   		<h:panelGrid columns="1">
+    		<model:labeledContent label="#{bundleTabPessoa['tabPessoa.panel.pessoa.endereco.rua']}">
+				<p:inputText value="#{pessoa.endereco.rua}" />
+			</model:labeledContent>
+			<model:labeledContent label="#{bundleTabPessoa['tabPessoa.panel.pessoa.endereco.bairro']}">
+				<p:inputText value="#{pessoa.endereco.bairro}" />
+			</model:labeledContent>
+			<model:labeledContent label="#{bundleTabPessoa['tabPessoa.panel.pessoa.endereco.cep']}">
+				<p:inputMask value="#{pessoa.endereco.cep}" mask="99999-999" />
+			</model:labeledContent>
+			<model:labeledContent label="#{bundleTabPessoa['tabPessoa.panel.pessoa.endereco.estado']}">
+				<p:selectOneMenu value="#{estado}" var="item">
+					<f:selectItem itemLabel="#{bundleTabPessoa['selectOneMenu.select']}" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{estados}" var="iestado" itemLabel="#{iestado.value}" itemValue="#{iestado}"/>
+                    <p:column>
+                         #{item.value}
+                    </p:column>
+                    <p:ajax update="cidades" immediate="true"/> 
+                </p:selectOneMenu>					
+			</model:labeledContent>
+			<model:labeledContent label="#{bundleTabPessoa['tabPessoa.panel.pessoa.endereco.cidade']}">
+				<p:selectOneMenu id="cidades" value="#{pessoa.endereco.cidade}" var="item" converter="genericConverter">
+					<f:selectItems value="#{cidades}" var="cidade" itemLabel="#{cidade.cidade}" itemValue="#{cidade}"/>
+                	<p:column>
+                    	#{item}
+                    </p:column>
+                </p:selectOneMenu>
+			</model:labeledContent> 
+    	</h:panelGrid>
+	</p:tab>
+	<p:tab id="tabContatos" title="#{bundleTabPessoa['tabPessoa.panel.pessoa.contatos']}">
+	 	<h:panelGrid columns="2" >
+			<model:telephoneManager
+						id="phone"
+						telephoneProperty="#{usuariosController.telefone}"
+						telephonesProperty="#{pessoa.telefones}"
+						tipos="#{usuariosController.tipos}"
+						controller="#{usuariosController}"
+						form="#{form}"
+						container="#{container}"
+						init="telefoneInit"/>
+					
+			<model:emailManager 
+					id="email"
+					emailProperty="#{usuariosController.email}"
+					emailsProperty="#{pessoa.emails}"
+					controller="#{usuariosController}"
+					form="#{form}"
+					container="#{container}"
+					init="emailInit"/>
+		</h:panelGrid>
+	</p:tab>
+</ui:composition>

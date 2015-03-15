@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:model="http://br.eximia.jsfutils/ui">
+<h:head/>
+<h:body>
+	<ui:composition template="models/rawCrudTemplate.xhtml">
+		<ui:param name="titleParam" value="#{bundleAvaliacoes['avaliacoes.title']}" />
+		<ui:param name="gridFormParam" value="frmAvaliacoesGrid" />
+		<ui:param name="datatableParam" value="avaliacoesDatatable" />
+		<ui:param name="collectionParam" value="#{avaliacoesController.list}" />
+		<ui:param name="entityParam" value="#{avaliacoesController.entity}" />
+		<ui:param name="dialogParam" value="frmAvaliacoesDlg" />
+		<ui:param name="crudDialogParam" value="avaliacoesCrudDialog" />
+		<ui:param name="crudDisplayParam" value="avaliacoesCrudDisplay" />
+		<ui:param name="removeConfirmDialogParam" value="avaliacoesRemoveConfirmationDialog" />
+		<ui:param name="tabTitleParam" value="#{bundleAvaliacoes['avaliacoes.panel.avaliacao']}" />
+		<ui:param name="controllerParam" value="#{avaliacoesController}" />
+		
+		<ui:define name="datatableColumns">
+			<model:column header="#{bundleAvaliacoes['avaliacoes.datatable.avaliacao']}" field="#{registro.avaliacao}" />
+			<model:column header="#{bundleAvaliacoes['avaliacoes.datatable.inicio']}" field="#{registro.inicio}" />
+			<model:column header="#{bundleAvaliacoes['avaliacoes.datatable.fim']}" field="#{registro.fim}" />
+		</ui:define>
+		
+		<ui:define name="fields">
+			<p:tab id="tabAvaliacao" title="#{tabTitleParam}">
+				<h:panelGrid columns="1">
+					<model:labeledContent label="#{bundleAvaliacoes['avaliacoes.panel.avaliacao.avaliacao']}">
+						<p:inputText value="#{entityParam.avaliacao}" />
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleAvaliacoes['avaliacoes.panel.avaliacao.descricao']}">
+						<p:inputTextarea value="#{entityParam.descricao}" autoResize="false" />
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleAvaliacoes['avaliacoes.panel.avaliacao.inicio']}">
+						<p:inputMask value="#{entityParam.inicio}" mask="99/99/9999">
+							<f:convertDateTime type="date" dateStyle="short" pattern="dd/MM/yyyy"/>
+						</p:inputMask>
+					</model:labeledContent>
+					<model:labeledContent label="#{bundleAvaliacoes['avaliacoes.panel.avaliacao.fim']}">
+						<p:inputMask value="#{entityParam.fim}" mask="99/99/9999">
+							<f:convertDateTime type="date" dateStyle="short" pattern="dd/MM/yyyy"/>
+						</p:inputMask>
+					</model:labeledContent>
+				</h:panelGrid>
+			</p:tab>
+			<p:tab id="tabAvaliadores" title="#{bundleAvaliacoes['avaliacoes.panel.avaliadores']}">
+				<model:labeledContent label="#{bundleAvaliacoes['avaliacoes.panel.avaliadores.avaliadores']}">
+					<p:pickList value="#{controllerParam.avaliadores}"  
+	             						var="avaliador"  
+	             						itemLabel="#{avaliador}"  
+	             						itemValue="#{avaliador}"
+	             						showSourceFilter="true" 
+	             						showTargetFilter="true" 
+	             						filterMatchMode="contains"
+	             						converter="genericConverter">
+	             				<f:facet name="EntityType">br.eximia.erh.model.Profissional</f:facet>
+	             				<f:facet name="sourceCaption">#{bundleAvaliacoes['avaliacoes.panel.avaliadores.avaliadores.disponivel']}</f:facet>  
+	     						<f:facet name="targetCaption">#{bundleAvaliacoes['avaliacoes.panel.avaliadores.avaliadores.selecionado']}</f:facet>
+	             			</p:pickList> 
+				</model:labeledContent>
+			</p:tab>
+			<p:tab id="tabAvaliados" title="#{bundleAvaliacoes['avaliacoes.panel.avaliados']}">
+				<model:labeledContent label="#{bundleAvaliacoes['avaliacoes.panel.avaliados.avaliados']}">
+					<p:pickList value="#{controllerParam.avaliados}"  
+	             						var="avaliado"  
+	             						itemLabel="#{avaliado}"  
+	             						itemValue="#{avaliado}"
+	             						showSourceFilter="true" 
+	             						showTargetFilter="true" 
+	             						filterMatchMode="contains"
+	             						converter="genericConverter">
+	             				<f:facet name="EntityType">br.eximia.erh.model.Profissional</f:facet>
+	             				<f:facet name="sourceCaption">#{bundleAvaliacoes['avaliacoes.panel.avaliados.avaliados.disponivel']}</f:facet>  
+	     						<f:facet name="targetCaption">#{bundleAvaliacoes['avaliacoes.panel.avaliados.avaliados.selecionado']}</f:facet>
+	             			</p:pickList> 
+				</model:labeledContent>
+			</p:tab>
+		</ui:define>
+		
+		<ui:define name="saveButton">
+        	<p:commandButton value="#{bundleAvaliacoes['crudDialog.save']}" action="#{controllerParam.save}" process="@this, :#{dialogParam}:accordionPanel:tabAvaliacao, :#{dialogParam}:accordionPanel:tabAvaliadores, :#{dialogParam}:accordionPanel:tabAvaliados" update=":growl, :#{gridFormParam}:#{datatableParam}">
+            	<f:setPropertyActionListener value="#{controllerParam.avaliadores.target}" target="#{entityParam.avaliadores}" />
+            	<f:setPropertyActionListener value="#{controllerParam.avaliados.target}" target="#{entityParam.avaliados}" />  
+           	</p:commandButton>
+		</ui:define>
+		
+	 </ui:composition>		
+</h:body>
+</html>

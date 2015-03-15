@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:model="http://br.eximia.jsfutils/ui">
+<h:head/>
+<h:body>
+	<ui:composition template="template.xhtml">
+		<ui:define name="title">#{titleParam}</ui:define>
+		<ui:define name="body">
+			<model:methodParam name="listAction" value="#{listPageParam}"/>
+			<model:methodParam name="saveAction" value="#{saveAction}"/>
+			<model:methodParam name="resetAction" value="#{resetActionParam}"/>
+		
+			<h:form id="#{prefixParam}Frm">
+				<h:panelGroup layout="block" id="#{prefixParam}dsp">
+	           		<p:accordionPanel>
+	               		 <ui:insert name="fields"/>
+	                </p:accordionPanel>
+	               	<br/>
+	                <center>
+	                    <p:commandButton value="#{bundleCrudEditTemplate['crudEditTemplate.save']}" actionListener="#{saveAction}" action="#{listAction}" process="#{saveProcess}"/>
+	               		<p:commandButton value="#{bundleCrudEditTemplate['crudEditTemplate.cancel']}" actionListener="#{resetAction}" action="#{listAction}" immediate="true"/>
+	                </center>
+	           	</h:panelGroup>
+			</h:form>
+		</ui:define>
+	 </ui:composition>		
+</h:body>
+</html>

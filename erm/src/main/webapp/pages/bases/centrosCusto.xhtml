@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:model="http://br.eximia.jsfutils/ui">
+<h:head/>
+<h:body>
+	<ui:composition template="models/crudTemplate.xhtml">
+		<ui:param name="titleParam" value="#{bundleCentrosCusto['centrosCusto.title']}" />
+		<ui:param name="gridFormParam" value="frmCentrosCustoGrid" />
+		<ui:param name="datatableParam" value="centrosCustoDatatable" />
+		<ui:param name="collectionParam" value="#{centrosCustoController.list}" />
+		<ui:param name="entityParam" value="#{centrosCustoController.entity}" />
+		<ui:param name="dialogParam" value="frmCentrosCustoDlg" />
+		<ui:param name="crudDialogParam" value="centrosCustoCrudDialog" />
+		<ui:param name="crudDisplayParam" value="centrosCustoCrudDisplay" />
+		<ui:param name="removeConfirmDialogParam" value="centrosCustoRemoveConfirmationDialog" />
+		<ui:param name="tabTitleParam" value="#{bundleCentrosCusto['centrosCusto.panel.centroCusto']}" />
+		<ui:param name="controllerParam" value="#{centrosCustoController}" />
+		
+		<ui:define name="datatableColumns">
+			<model:column header="#{bundleCentrosCusto['centrosCusto.datatable.centroCusto']}" field="#{registro.centroCusto}" />
+		</ui:define>
+		
+		<ui:define name="fields">
+			<p:tab title="#{tabTitleParam}">
+				<h:panelGrid columns="1">
+					<model:labeledContent label="#{bundleCentrosCusto['centrosCusto.panel.centroCusto.centroCusto']}">
+						<p:inputText value="#{entityParam.centroCusto}" />
+					</model:labeledContent>
+				</h:panelGrid>
+			</p:tab>
+		</ui:define>
+	 </ui:composition>		
+</h:body>
+</html>
